@@ -29,6 +29,7 @@ export async function POST(req: Request) {
     inputs: buildOpenAssistantPrompt(messages),
     parameters: {
       max_new_tokens: 1000,
+      // @ts-ignore (this is a valid parameter specifically in OpenAssistant models)
       typical_p: 0.2,
       repetition_penalty: 1,
       truncate: 1000,
