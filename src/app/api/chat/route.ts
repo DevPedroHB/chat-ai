@@ -28,7 +28,8 @@ export async function POST(req: Request) {
     model: "OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5",
     inputs: buildOpenAssistantPrompt(messages),
     parameters: {
-      max_new_tokens: 200,
+      max_new_tokens: 1000,
+      typical_p: 0.2,
       repetition_penalty: 1,
       truncate: 1000,
       return_full_text: false,

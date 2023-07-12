@@ -1,6 +1,9 @@
 "use client";
 
 import { useChat } from "ai/react";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
@@ -20,7 +23,7 @@ export default function Chat() {
   });
 
   return (
-    <Card className="w-full max-w-[468px] flex flex-col mx-2">
+    <Card className="w-full min-w-[468px] max-w-[min-content] flex flex-col mx-2">
       <CardHeader>
         <CardTitle>Chat AI</CardTitle>
         <CardDescription>
@@ -52,7 +55,27 @@ export default function Chat() {
                   <span className="block font-bold text-slate-700">
                     {message.role === "user" ? "Usuário" : "AI"}:
                   </span>
-                  {message.content}
+                  <ReactMarkdown
+                    children={message.content}
+                    components={{
+                      code({ node, inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || "");
+                        return !inline && match ? (
+                          <SyntaxHighlighter
+                            children={String(children).replace(/\n$/, "")}
+                            style={dracula as any}
+                            language={match[1]}
+                            PreTag="div"
+                            {...props}
+                          />
+                        ) : (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      },
+                    }}
+                  />
                 </p>
               </div>
             );
